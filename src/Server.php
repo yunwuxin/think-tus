@@ -354,7 +354,7 @@ class Server
     /**
      * Verify max upload size.
      */
-    protected function verifyUploadSize(): bool
+    protected function verifyUploadSize()
     {
         $maxUploadSize = $this->getMaxUploadSize();
 
