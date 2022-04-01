@@ -4,9 +4,9 @@ namespace think\tus;
 
 use ArrayObject;
 use Carbon\Carbon;
+use Psr\SimpleCache\CacheInterface;
 use Ramsey\Uuid\Uuid;
 use think\Cache;
-use think\cache\Driver as Store;
 use think\Event;
 use think\exception\HttpException;
 use think\File;
@@ -66,19 +66,19 @@ class Server
     /** @var Request */
     protected $request;
 
-    /** @var Store */
+    /** @var CacheInterface */
     protected $store;
 
     /** @var Event */
     protected $event;
 
-    public function __construct(Store $store, Event $event)
+    public function __construct(CacheInterface $store, Event $event)
     {
         $this->store = $store;
         $this->event = $event;
     }
 
-    public function __make(Cache $cache, Event $event)
+    public static function __make(Cache $cache, Event $event)
     {
         return new self($cache->store(), $event);
     }
@@ -193,9 +193,6 @@ class Server
         return response('', 201, $headers);
     }
 
-    /**
-     * Handle PATCH request.
-     */
     protected function handlePatch()
     {
         $key = $this->request->param($this->keyName);
